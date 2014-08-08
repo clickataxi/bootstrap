@@ -505,7 +505,8 @@ function ($compile, $parse, $document, $rootScope, $position, dateFilter, datePa
       clearText: '@',
       closeText: '@',
       dateDisabled: '&',
-      customClass: '&'
+      customClass: '&',
+      ngDisabled: '=?'
     },
     link: function(scope, element, attrs, ngModel) {
       var dateFormat,
@@ -733,17 +734,30 @@ function ($compile, $parse, $document, $rootScope, $position, dateFilter, datePa
 
       scope.$watch('isOpen', function(value) {
         if (value) {
-          scope.position = appendToBody ? $position.offset(element) : $position.position(element);
-          scope.position.top = scope.position.top + element.prop('offsetHeight');
+          if (!scope.ngDisabled) {
+            scope.position = appendToBody ? $position.offset(element) : $position.position(element);
+            scope.position.top = scope.position.top + element.prop('offsetHeight');
 
-          $timeout(function() {
+            $timeout(function() {
             if (onOpenFocus) {
               scope.$broadcast('datepicker.focus');
             }
             $document.bind('click', documentClickBind);
-          }, 0, false);
+            }, 0, false);
+          }
+          else {
+            scope.isOpen = false;
+          }
         } else {
           $document.unbind('click', documentClickBind);
+        }
+      });
+
+      scope.$watch('ngDisabled', function(value) {
+        element.prop('disabled', value);
+
+        if (value && scope.isOpen) {
+            scope.isOpen = false;
         }
       });
 

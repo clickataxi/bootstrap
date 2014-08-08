@@ -1741,6 +1741,41 @@ describe('datepicker directive', function () {
         });
       });
 
+    describe('`ng-disabled` attribute', function() {
+      beforeEach(inject(function() {
+        $rootScope.disabled = true;
+        $rootScope.open = true;
+        var wrapElement = $compile('<div><input ng-model="date" datepicker-popup is-open="open" ng-disabled="disabled"><div>')($rootScope);
+        $rootScope.$digest();
+        assignElements(wrapElement);
+      }));
+
+      it('should do not toggle with isOpen set to true', function () {
+        expect(dropdownEl).toBeHidden();
+      });
+
+      it('should toggle after enabling', function() {
+        $rootScope.disabled = false;
+        $rootScope.$digest();
+        expect(dropdownEl).toBeHidden();
+
+        $rootScope.open = true;
+        $rootScope.$digest();
+        expect(dropdownEl).not.toBeHidden();
+      });
+
+      it('should close after disabling', function() {
+        $rootScope.disabled = false;
+        $rootScope.open = true;
+        $rootScope.$digest();
+        expect(dropdownEl).not.toBeHidden();
+
+        $rootScope.disabled = true;
+        $rootScope.$digest();
+        expect(dropdownEl).toBeHidden();
+      });
+    });
+
       describe('custom format', function () {
         beforeEach(inject(function() {
           var wrapElement = $compile('<div><input ng-model="date" datepicker-popup="dd-MMMM-yyyy" is-open="true"><div>')($rootScope);
