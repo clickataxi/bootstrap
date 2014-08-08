@@ -13,7 +13,11 @@ All settings can be provided as attributes in the `datepicker` or globally confi
  	:
  	The date object.
 
- * `datepicker-mode` <i class="glyphicon glyphicon-eye-open"></i>
+ * `ng-disabled` <i class="glyphicon glyphicon-eye-open"></i>
+    :
+    Will disable time picker for user interaction.
+
+* `datepicker-mode` <i class="glyphicon glyphicon-eye-open"></i>
    _(Defaults: 'day')_ :
    Current mode of the datepicker _(day|month|year)_. Can be used to initialize datepicker to specific mode.
 
